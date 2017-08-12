@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.example.demo.dao.TextDao">
+ 
+  	<select id="pieshow" resultType="com.example.demo.dto.keywordDTO">
+ 	select KEYWORD,KEYWORDNUM from TEXTMINING  where PART=#{param} ORDER BY KEYWORDNUM DESC 
+ 	</select>
+ 	
+ 	<insert id="insertText">
+ 	insert into Textmining(keyword,keywordnum,id,part) values(#{keyword},#{keywordnum},1,'빅데이터')
+ 	</insert>
+</mapper>

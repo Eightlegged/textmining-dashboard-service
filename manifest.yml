@@ -1,0 +1,6 @@
+  applications:
+  - name: Eightlegged
+    random-route: true
+    memory: 256M
+    path: target/Eightlegged.war
+    buildpack: java_buildpack

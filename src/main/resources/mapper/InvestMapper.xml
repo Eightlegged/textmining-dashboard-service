@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.example.demo.dao.InvestDao">
+ 
+  	
+ 	<insert id="InvestDao">
+ 	insert into invest(id,part,invest1,invest2,invest3,invest4,invest5,invest6,invest7,invest8,invest9
+ 	) values(1,'빅데이터',#{invest1},#{invest2},#{invest3},#{invest4},#{invest5},#{invest6},#{invest7},#{invest8},#{invest9})
+ 	</insert>
+</mapper>
