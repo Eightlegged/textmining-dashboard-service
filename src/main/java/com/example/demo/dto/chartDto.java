@@ -2,20 +2,21 @@ package com.example.demo.dto;
 
 public class chartDto {
 
-	private String letter;
-	private int freq;
-	public String getLetter() {
-		return letter;
+	private String mt_part;
+	private int count;
+	public String getMt_part() {
+		return mt_part;
 	}
-	public void setLetter(String letter) {
-		this.letter = letter;
+	public void setMt_part(String mt_part) {
+		this.mt_part = mt_part;
 	}
-	public int getFreq() {
-		return freq;
+	public int getCount() {
+		return count;
 	}
-	public void setFreq(int freq) {
-		this.freq = freq;
+	public void setCount(int count) {
+		this.count = count;
 	}
+	
 
 	
 }

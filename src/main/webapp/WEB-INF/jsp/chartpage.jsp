@@ -16,8 +16,10 @@
 <!-- Custom CSS -->
 <link href="css/sb-admin.css" rel="stylesheet">
 
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <!-- Morris Charts CSS -->
-<link href="css/plugins/morris.css" rel="stylesheet">
 
 <!-- Custom Fonts -->
 <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet"
@@ -29,9 +31,47 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<script src="js/jquery.js"></script>
 
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
 </head>
+<script>
+$( document ).ready(function() {
+	
+	$.ajax({
+		type : "POST",
+		url : "/teammeeting",
+		dataType:"json",
+		error : function() {
+			alert('통신실패!!');
+		},
+		success : function(data) {
+			
+			for(i=0;i<data.length;i++){
+				
+				var str="<button type='button' id="+i+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
+			
+				if(data[i].mt_part=="RnD"){
+				$('#meetinglist1').append(str);}
+				else if(data[i].mt_part=="Softlayer"){
+					$('#meetinglist2').append(str);
+				}else if(data[i].mt_part=="Bluemix"){
+					$('#meetinglist3').append(str);
+				}else if(data[i].mt_part=="테스트파트"){
+					$('#meetinglist4').append(str);
+				}
+				$('#'+i).attr("class",'list-group-item');
+				//$('#'+i).attr("onclick",'showdata('+"'"+data[i].meeting_id+"'"+')');
+				str="";
+			}
+		
+		}
 
+	});
+	});
+</script>
 <body>
 
 	<div id="wrapper">
@@ -171,7 +211,7 @@
 				</div>
 				<!-- /.row -->
 
-			<div class="row">
+				<div class="row">
 					<div class="col-lg-3">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
@@ -181,30 +221,14 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div class="huge">인프라</div>
+										<div style="font-size: 32px" id="meeting1name">R&D</div>
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
-										
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist1"></div>
+
 							</div>
 
 						</div>
@@ -218,30 +242,14 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div class="huge">인프라</div>
+										<div style="font-size: 32px" id="meeting2name">Softlayer</div>
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
-										
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist2"></div>
+
 							</div>
 						</div>
 					</div>
@@ -254,30 +262,14 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div class="huge">인프라</div>
+										<div style="font-size: 32px" id="meeting3name">Bluemix</div>
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
-										
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist3"></div>
+
 							</div>
 						</div>
 					</div>
@@ -290,73 +282,56 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div class="huge">인프라</div>
+										<div style="font-size: 32px" id="meeting4name">테스트파트</div>
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
-										
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist4"></div>
+
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-lg-4">
-						<div class="panel panel-green">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> Pie Chart Example with
-									Tooltips
+									<i class="fa fa-long-arrow-right fa-fw"></i>월회의수
 								</h3>
 							</div>
 							<div class="panel-body">
-								<div class="flot-chart">
-									<div class="flot-chart-content" id="flot-pie-chart"></div>
-								</div>
-								<div class="text-right">
-									<a href="#">View Details <i
-										class="fa fa-arrow-circle-right"></i></a>
+								<div class="row">
+									<div class="col-md-6 text-left">
+										<canvas id="myChart" width="1000" height="300"></canvas>
+									</div>
+									<div class="col-md-6 text-right">
+										<select id="job" class="selectpicker">
+											<option value="">년월</option>
+											<option value="1">17/01</option>
+											<option value="2">17/02</option>
+											<option value="3">17/03</option>
+											<option value="4">17/04</option>
+											<option value="5">17/05</option>
+											<option value="6">17/06</option>
+											<option value="7">17/07</option>
+											<option value="8">17/08</option>
+											<option value="9">17/09</option>
+											<option value="10">17/10</option>
+											<option value="11">17/11</option>
+											<option value="12">17/12</option>
+
+										</select>
+										<button id="histclick" class="btn-success" value="보기">보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-8">
-						<div class="panel panel-yellow">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> Multiple Axes Line Graph
-									Example with Tooltips and Raw Data
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div class="flot-chart">
-									<div class="flot-chart-content" id="flot-multiple-axes-chart"></div>
-								</div>
-								<div class="text-right">
-									<a href="#">View Details <i
-										class="fa fa-arrow-circle-right"></i></a>
-								</div>
-							</div>
-						</div>
-					</div>
+
+
 				</div>
 				<!-- /.row -->
 
@@ -365,124 +340,90 @@
 						<div class="panel panel-red">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> Moving Line Chart
+									<i class="fa fa-long-arrow-right"></i> R&D
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div id="pie1"></div>
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="panel panel-green">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-long-arrow-right"></i> SOFTLAYER
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div id="pie"></div>
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-long-arrow-right"></i> BLUEMIX
 								</h3>
 							</div>
 							<div class="panel-body">
 								<div class="flot-chart">
 									<div class="flot-chart-content" id="flot-moving-line-chart"></div>
 								</div>
-								<div class="text-right">
-									<a href="#">View Details <i
-										class="fa fa-arrow-circle-right"></i></a>
-								</div>
+								
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-6">
-						<div class="panel panel-primary">
+						<div class="panel panel-yellow">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> Bar Graph with Tooltips
+									<i class="fa fa-long-arrow-right"></i>테스트파트
 								</h3>
 							</div>
 							<div class="panel-body">
 								<div class="flot-chart">
-									<div class="flot-chart-content" id="flot-bar-chart"></div>
+									<div class="flot-chart-content" id="flot-moving-line-chart"></div>
 								</div>
-								<div class="text-right">
-									<a href="#">View Details <i
-										class="fa fa-arrow-circle-right"></i></a>
-								</div>
+								
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- /.row -->
-
-				<!-- Morris Charts -->
-				<div class="row">
-					<div class="col-lg-12">
-						<h2 class="page-header">Morris Charts</h2>
-						<p class="lead">
-							Morris.js is a very simple API for drawing line, bar, area and
-							donut charts. For full usage instructions and documentation for
-							Morris.js charts, visit <a
-								href="http://morrisjs.github.io/morris.js/">http://morrisjs.github.io/morris.js/</a>.
-						</p>
-					</div>
-				</div>
-				<!-- /.row -->
-
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="panel panel-green">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-bar-chart-o"></i> Area Line Graph Example with
-									Tooltips
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div id="morris-area-chart"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /.row -->
-
-				<div class="row">
-					<div class="col-lg-4">
-						<div class="panel panel-yellow">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> Donut Chart Example
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div id="morris-donut-chart"></div>
-								<div class="text-right">
-									<a href="#">View Details <i
-										class="fa fa-arrow-circle-right"></i></a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4">
+<div class="row">
+					<div class="col-lg-6">
 						<div class="panel panel-red">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> Line Graph Example with
-									Tooltips
+									<i class="fa fa-long-arrow-right"></i>팀 총 키워드
 								</h3>
 							</div>
 							<div class="panel-body">
-								<div id="morris-line-chart"></div>
-								<div class="text-right">
-									<a href="#">View Details <i
-										class="fa fa-arrow-circle-right"></i></a>
-								</div>
+								<div id="pie5"></div>
+								
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-4">
-						<div class="panel panel-primary">
+					<div class="col-lg-6">
+						<div class="panel panel-green">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> Bar Graph Example
+									<i class="fa fa-long-arrow-right"></i>연간 팀 총 키워드
 								</h3>
 							</div>
 							<div class="panel-body">
-								<div id="morris-bar-chart"></div>
-								<div class="text-right">
-									<a href="#">View Details <i
-										class="fa fa-arrow-circle-right"></i></a>
-								</div>
+								<div id="pie6"></div>
+								
 							</div>
 						</div>
 					</div>
-				</div>
-				<!-- /.row -->
+					</div>
+
+
 
 			</div>
 			<!-- /.container-fluid -->
@@ -499,19 +440,186 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.min.js"></script>
 
-	<!-- Morris Charts JavaScript -->
-	<script src="js/plugins/morris/raphael.min.js"></script>
-	<script src="js/plugins/morris/morris.min.js"></script>
-	<script src="js/plugins/morris/morris-data.js"></script>
-
-	<!-- Flot Charts JavaScript -->
-	<!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
-	<script src="js/plugins/flot/jquery.flot.js"></script>
-	<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-	<script src="js/plugins/flot/jquery.flot.resize.js"></script>
-	<script src="js/plugins/flot/jquery.flot.pie.js"></script>
-	<script src="js/plugins/flot/flot-data.js"></script>
 
 </body>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/js/d3.min.js"  charset="utf-8"></script>
+<script src="/js/d3pie.js"></script>
+
+
+<script>
+$("#histclick").click(function(){
+	var str="17/0"+($("#job").val());
+	var str1="17/0"+(Number($("#job").val())+1).toString();
+	$('svg').remove();
+	histogram(str,str1);
+	$.ajax({
+
+		type : "POST",
+		url : "/monthpart2show",
+		dataType : "json",
+		data : {
+			part : 'Softlayer',
+			start: str,
+			end:str1
+			
+		},
+		error : function() {
+			alert('통신실패!!');
+		},
+		success : function(data) {
+			
+			var pie = new d3pie("pie", {
+				header : {
+					title : {
+						text : "Softlayer 월간 키워드"
+					}
+				},
+				data : {
+					content : data
+
+				}
+			});
+		}
+
+	});
+	$.ajax({
+
+		type : "POST",
+		url : "/monthpart1show",
+		dataType : "json",
+		data : {
+			part : 'RnD',
+			start: str,
+			end:str1
+			
+		},
+		error : function() {
+			alert('통신실패!!');
+		},
+		success : function(data) {
+			
+			var pie = new d3pie("pie1", {
+				header : {
+					title : {
+						text : "R&D 월관 키워드"
+					}
+				},
+				data : {
+					content : data
+
+				}
+			});
+		}
+
+	});
+	$.ajax({
+
+		type : "POST",
+		url : "/monthall",
+		dataType : "json",
+		data : {
+			
+			start: str,
+			end:str1
+			
+		},
+		error : function() {
+			alert('통신실패!!');
+		},
+		success : function(data) {
+			
+			var pie = new d3pie("pie5", {
+				header : {
+					title : {
+						text : "월간 팀 키워드"
+					}
+				},
+				data : {
+					content : data
+
+				}
+			});
+		}
+
+	});
+	$.ajax({
+
+		type : "POST",
+		url : "/yearall",
+		dataType : "json",
+		data : {
+			
+	
+			
+		},
+		error : function() {
+			alert('통신실패!!');
+		},
+		success : function(data) {
+			
+			var pie = new d3pie("pie6", {
+				header : {
+					title : {
+						text : "연간 팀 키워드"
+					}
+				},
+				data : {
+					content : data
+
+				}
+			});
+		}
+
+	});
+	
+});
+</script>
+
+<script>
+function histogram( str, str1){
+	$.ajax({
+
+		type : "POST",
+		url : "/teammonth",
+		dataType : "json",
+		data : {
+			
+			start: str,
+			end: str1
+			
+		},
+		error : function() {
+			alert('통신실패!!');
+		},
+		success : function(data) {
+			var data2 = {
+					labels: ["Bluemix", "테스트파트", "Softlayer", "RnD"],
+					datasets: [
+						{
+							label: "My First dataset",
+							fillColor: "rgba(150,200,250,0.5)",
+							strokeColor: "rgba(150,200,250,0.8)",
+							highlightFill: "rgba(150,200,250,0.75)",
+							highlightStroke: "rgba(150,200,250,1)",
+							data: data
+						}
+					]
+				};
+				var options = {	animation: false };
+				var steps = 3;
+				var ctx = $('#myChart').get(0).getContext('2d');
+				var myBarChart = new Chart(ctx).Bar(data2, {
+				    scaleOverride: true,
+				    scaleSteps: steps,
+				    scaleStepWidth: Math.ceil(6 / steps),
+				    scaleStartValue: 0
+				});
+		}
+		});
+	
+}
+</script>
 
 </html>

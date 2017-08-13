@@ -100,5 +100,90 @@ public class HomeController {
 		
 		return text;
 	}
-	
+	@RequestMapping("/teammeeting")
+	public List teammeeting() {
+		return mapper.ALLmeeting_serv();
+	}
+	@RequestMapping("/teammonth")
+	public List teammonth(HttpServletRequest request) {
+		List<Integer> a;
+		
+		a=mapper.meetingmonth(request.getParameter("start"),request.getParameter("end"));
+		
+		
+		
+		return a;
+	}
+	@RequestMapping("/keywordshow")
+	public List keywordshow(HttpServletRequest request) {
+		return mapper.showkeyword(request.getParameter("part"));
+	}
+	@RequestMapping("/monthpart2show")
+	public List monthpart2show(HttpServletRequest request) {
+		List<String> pie=mapper.monthpieshow(request.getParameter("start"),request.getParameter("end"),request.getParameter("part"));
+		List<Integer> pie1=mapper.monthpieshow1(request.getParameter("start"),request.getParameter("end"),request.getParameter("part"));
+		List<pieDto> pielist = new ArrayList<pieDto>();
+		
+		for(int i=0;i<6;i++) {
+			pieDto pd=new pieDto();
+			pd.setLabel(pie.get(i));
+			
+			pd.setValue(pie1.get(i));
+			pielist.add(pd);
+			
+		}
+		
+		return pielist;
+	}
+	@RequestMapping("/monthpart1show")
+	public List monthpart1show(HttpServletRequest request) {
+		List<String> pie=mapper.monthpieshow(request.getParameter("start"),request.getParameter("end"),request.getParameter("part"));
+		List<Integer> pie1=mapper.monthpieshow1(request.getParameter("start"),request.getParameter("end"),request.getParameter("part"));
+		List<pieDto> pielist = new ArrayList<pieDto>();
+		
+		for(int i=0;i<6;i++) {
+			pieDto pd=new pieDto();
+			pd.setLabel(pie.get(i));
+			
+			pd.setValue(pie1.get(i));
+			pielist.add(pd);
+			
+		}
+		
+		return pielist;
+	}
+	@RequestMapping("/monthall")
+	public List monthall(HttpServletRequest request) {
+		List<String> pie=mapper.monthallshow(request.getParameter("start"),request.getParameter("end"));
+		List<Integer> pie1=mapper.monthallshow1(request.getParameter("start"),request.getParameter("end"));
+		List<pieDto> pielist = new ArrayList<pieDto>();
+		
+		for(int i=0;i<10;i++) {
+			pieDto pd=new pieDto();
+			pd.setLabel(pie.get(i));
+			
+			pd.setValue(pie1.get(i));
+			pielist.add(pd);
+			
+		}
+		
+		return pielist;
+	}
+	@RequestMapping("/yearall")
+	public List monthall() {
+		List<String> pie=mapper.yearallshow();
+		List<Integer> pie1=mapper.yearallshow1();
+		List<pieDto> pielist = new ArrayList<pieDto>();
+		
+		for(int i=0;i<10;i++) {
+			pieDto pd=new pieDto();
+			pd.setLabel(pie.get(i));
+			
+			pd.setValue(pie1.get(i));
+			pielist.add(pd);
+			
+		}
+		
+		return pielist;
+	}
 }

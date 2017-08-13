@@ -1,46 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-	<style>
 
-  .bar{
-    fill: steelblue;
-  }
-
-  .bar:hover{
-    fill: brown;
-  }
-
-	.axis {
-	  font: 10px sans-serif;
-	}
-
-	.axis path,
-	.axis line {
-	  fill: none;
-	  stroke: #000;
-	  shape-rendering: crispEdges;
-	}
-
-	</style>
-
-</head>
-
-
-<body>
-	
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-
+function histogram( start, end){
 // set the dimensions of the canvas
 var margin = {top: 20, right: 20, bottom: 70, left: 40},
-    width = 1000 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
+    width = 100 - margin.left - margin.right,
+    height = 100 - margin.top - margin.bottom;
 
 
 // set the ranges
@@ -59,9 +22,8 @@ var yAxis = d3.svg.axis()
     .orient("left")
     .ticks(10);
 
-
 // add the SVG element
-var svg = d3.select("body").append("svg")
+var svg = d3.select("div#histgram").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -70,10 +32,10 @@ var svg = d3.select("body").append("svg")
 
 
 // load the data
-d3.json("http://localhost:8088/teammonth?start=17/08&end=17/09", function(error, data) {
+d3.json("http://localhost:8088/teammonth?start="+start+"&end="+end, function(error, data) {
 
     data.forEach(function(d) {
-    
+        
     	d.Letter = d.mt_part;
         
         d.Freq = d.count;
@@ -92,7 +54,7 @@ d3.json("http://localhost:8088/teammonth?start=17/08&end=17/09", function(error,
     .selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
-      .attr("dy", "-.5em")
+      .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
 
   svg.append("g")
@@ -101,7 +63,7 @@ d3.json("http://localhost:8088/teammonth?start=17/08&end=17/09", function(error,
     .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 5)
-      .attr("dy", ".7em")
+      .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Frequency");
 
@@ -118,8 +80,4 @@ d3.json("http://localhost:8088/teammonth?start=17/08&end=17/09", function(error,
 
 
 });
-
-</script>
-
-</body>
-</html>
+}

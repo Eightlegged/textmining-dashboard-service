@@ -8,13 +8,19 @@
 <meta name="author" content="">
 
 <title>SMA</title>
+	<!-- jQuery -->
+	<script src="js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+
 
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
 <link href="css/sb-admin.css" rel="stylesheet">
-
+ㅛ
 <!-- Morris Charts CSS -->
 <link href="css/plugins/morris.css" rel="stylesheet">
 
@@ -39,9 +45,41 @@
 
 <script src="/js/d3pie.js"></script>
 <script>
-	function showdata(team) {
+$( document ).ready(function() {
+$.ajax({
+	type : "POST",
+	url : "/teammeeting",
+	dataType:"json",
+	error : function() {
+		alert('통신실패!!');
+	},
+	success : function(data) {
 		
-		$('#teamname').text(team);
+		for(i=0;i<data.length;i++){
+			
+			var str="<button type='button' id="+i+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
+		
+			if(data[i].mt_part=="RnD"){
+			$('#meetinglist1').append(str);}
+			else if(data[i].mt_part=="Softlayer"){
+				$('#meetinglist2').append(str);
+			}else if(data[i].mt_part=="Bluemix"){
+				$('#meetinglist3').append(str);
+			}else if(data[i].mt_part=="테스트파트"){
+				$('#meetinglist4').append(str);
+			}
+			$('#'+i).attr("class",'list-group-item');
+			$('#'+i).attr("onclick",'showdata('+"'"+data[i].meeting_id+"'"+')');
+			str="";
+		}
+	
+	}
+
+});
+});
+	function showdata(team) {
+		alert(team);
+		
 		$.ajax({
 
 			type : "POST",
@@ -58,7 +96,7 @@
 				var pie = new d3pie("pie", {
 					header : {
 						title : {
-							text : team
+							text : "분석 파이"
 						}
 					},
 					data : {
@@ -119,7 +157,36 @@
 			}
 
 		});
+		$.ajax({
 
+			type : "POST",
+			url : "/keywordshow",
+			dataType : "json",
+			data : {
+				part : team
+			},
+			error : function() {
+				alert('통신실패!!');
+			},
+			success : function(data) {
+				$('#textpaper1 >p ').remove();
+				var str="<p>";
+				var j=1;
+				for(i=0;i<data.length;i++){
+					
+					if(i==20*j){
+						
+						str+=data[i]+"<br>";
+						j++;
+					}else{
+						str+=data[i]+", ";
+					}
+					
+				}
+				$('#textpaper1').append(str);
+			}
+
+		});
 	}
 
 	(function() {
@@ -286,28 +353,13 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px">인프라</div>
+										<div style="font-size: 32px" id="meeting1name">R&D</div>
 									</div>
 								</div>
 							</div>
 							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
-										
+								<div class="list-group" id="meetinglist1">
+									
 								</div>
 								
 							</div>
@@ -323,27 +375,13 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px">빅데이터</div>
+										<div style="font-size: 32px" id="meeting2name">Softlayer</div>
 									</div>
 								</div>
 							</div>
 							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
+								<div class="list-group" id="meetinglist2" >
+									
 										
 								</div>
 								
@@ -359,27 +397,13 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px">클라우드</div>
+										<div style="font-size: 32px" id="meeting3name">Bluemix</div>
 									</div>
 								</div>
 							</div>
 							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
+								<div class="list-group" id="meetinglist3">
+									
 										
 								</div>
 								
@@ -395,28 +419,13 @@
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px">인공지능</div>
+										<div style="font-size: 32px" id="meeting4name">테스트파트</div>
 									</div>
 								</div>
 							</div>
 							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" >
-									<button type="button"
-										class="list-group-item list-group-item-action" onclick="showdata('빅데이터')">
-										샘플1</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Dapibus
-										ac facilisis in</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Morbi
-										leo risus</button>
-									<button type="button"
-										class="list-group-item list-group-item-action">Porta
-										ac consectetur ac</button>
-									<button type="button"
-										class="list-group-item list-group-item-action" disabled>Vestibulum
-										at eros</button>
-										
+								<div class="list-group" id="meetinglist4">
+									
 								</div>
 								
 							</div>
@@ -497,6 +506,22 @@
 						</div>
 						<div class="panel-body">
 							<div id="textpaper"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.row -->
+<!-- row -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-bar-chart-o fa-fw"></i> 구조화 흐름
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div id="textpaper1"></div>
 						</div>
 					</div>
 				</div>
