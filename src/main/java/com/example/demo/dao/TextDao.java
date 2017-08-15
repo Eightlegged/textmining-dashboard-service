@@ -43,4 +43,8 @@ public interface TextDao {
 	public List<String> yearallshow();
 	@Select("select sum(keywordnum) from textmining Inner JOIN meeting_serv ON meeting_serv.meeting_id = textmining.meeting_id where meeting_serv.MT_DATE >=TO_DATE('17/01','YY/MM') and meeting_serv.MT_DATE <=TO_DATE('17/12','YY/MM')  group by keyword,keywordnum ORDER BY sum(keywordnum) DESC")
 	public List<Integer> yearallshow1();
+	@Select("select Text from INSERTTEXT where part=#{param}")
+	public String text_speech1(@Param("param")String part);
+	@Select("select Text from Inserttext where part!=#{param}")
+	public List<String> text_speeches(@Param("param")String part);
 }
