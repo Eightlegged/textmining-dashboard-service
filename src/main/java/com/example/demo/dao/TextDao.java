@@ -6,11 +6,13 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.dto.MeetingservDto;
 import com.example.demo.dto.chartDto;
 import com.example.demo.dto.keywordDTO;
 import com.example.demo.dto.pieDto;
+import com.example.demo.dto.userDto;
 @Mapper
 public interface TextDao {
 
@@ -47,4 +49,12 @@ public interface TextDao {
 	public String text_speech1(@Param("param")String part);
 	@Select("select Text from Inserttext where part!=#{param}")
 	public List<String> text_speeches(@Param("param")String part);
+	@Select("select user_info.user_name, user_info.user_position,user_info.user_email from USER_MT_CONNECT Inner JOIN user_info ON USER_MT_CONNECT.user_id=user_info.user_id where user_mt_connect.meeting_id=#{param}")
+	public List<userDto> meetinguserlist(@Param("param")String part);
+	@Select("select part from Inserttext where part!=#{param}")
+	public List<String> text_num(@Param("param")String part);
+	@Select("select meeting_id, mt_name,mt_date,mt_part from meeting_serv where meeting_id=#{param}")
+	public MeetingservDto Assomeeting_serv(@Param("param")String part);
+	@Insert("insert into inserttext(part, text) values(#{param},#{param1})")
+	public void inserttextSTT(@Param("param")String id, @Param("param1")String text);
 }

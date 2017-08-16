@@ -35,14 +35,15 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
 </head>
 <script>
 $( document ).ready(function() {
 	
 	$.ajax({
 		type : "POST",
-		url : "/teammeeting",
+		url : "/teammeeting1",
 		dataType:"json",
 		error : function() {
 			alert('통신실패!!');
@@ -51,7 +52,7 @@ $( document ).ready(function() {
 			
 			for(i=0;i<data.length;i++){
 				
-				var str="<button type='button' id="+i+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
+				var str="<button type='button' id="+data[i].meeting_id+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
 			
 				if(data[i].mt_part=="RnD"){
 				$('#meetinglist1').append(str);}
@@ -62,8 +63,8 @@ $( document ).ready(function() {
 				}else if(data[i].mt_part=="테스트파트"){
 					$('#meetinglist4').append(str);
 				}
-				$('#'+i).attr("class",'list-group-item');
-				//$('#'+i).attr("onclick",'showdata('+"'"+data[i].meeting_id+"'"+')');
+				$('#'+data[i].meeting_id).attr("class",'list-group-item');
+				$('#'+data[i].meeting_id).attr("onclick",'showdata('+"'"+data[i].meeting_id+"'"+')');
 				str="";
 			}
 		
@@ -71,6 +72,67 @@ $( document ).ready(function() {
 
 	});
 	});
+	function showdata(id){
+		$.ajax({
+			type : "POST",
+			url : "/showallsurvey",
+			data:{meeting_id:id},
+			dataType:"json",
+			error : function() {
+				alert('통신실패!!');
+			},
+			success : function(data) {
+				$('#survey1 > p').remove();
+				$('#survey2 > p').remove();
+				$('#survey3 > p').remove();
+				$('#survey4 > p').remove();
+				$('#survey5 > p').remove();
+				$('#'+id).attr("class",'list-group-item active');
+				$('#surveybutton').attr("onclick","submitbutton('"+id+"')")
+				var text="<p>"+"1. "+data[0]+"</p>";
+					$('#survey1').append(text);
+					text="<p>"+"2. "+data[1]+"</p>";
+					$('#survey2').append(text);
+					text="<p>"+"3. "+data[2]+"</p>";
+					$('#survey3').append(text);
+					text="<p>"+"4. "+data[3]+"</p>";
+					$('#survey4').append(text);
+					text="<p>"+"5. "+data[4]+"</p>";
+					$('#survey5').append(text);
+					$('#survey1 > p').attr("style","font-size:20px");
+					$('#survey2 > p').attr("style","font-size:20px");
+					$('#survey3 > p').attr("style","font-size:20px");
+					$('#survey4 > p').attr("style","font-size:20px");
+					$('#survey5 > p').attr("style","font-size:20px");
+			}
+
+		});
+		
+	}
+	function submitbutton(id){
+		$.ajax({
+			type : "POST",
+			url : "/insertsurvey",
+			data:{meeting_id:id,
+				score1:$('input:radio[name="radioGroup"]:checked').val(),
+				score2:$('input:radio[name="radioGroup1"]:checked').val(),
+				score3:$('input:radio[name="radioGroup2"]:checked').val(),
+				score4:$('input:radio[name="radioGroup3"]:checked').val(),
+				score5:$('input:radio[name="radioGroup4"]:checked').val()
+				},
+			dataType:"text",
+			error : function() {
+				alert('통신실패!!');
+			},
+			success : function(data) {
+				if(data==1)
+				alert("완료하였습니다.");
+			}
+
+		});
+		
+		
+	}
 </script>
 <body>
 
@@ -201,11 +263,11 @@ $( document ).ready(function() {
 				<!-- Page Heading -->
 				<div class="row">
 					<div class="col-lg-12">
-						<h1 class="page-header">차트</h1>
+						<h1 class="page-header">MyPage</h1>
 						<ol class="breadcrumb">
 							<li><i class="fa fa-dashboard"></i> <a href="/Dashboard1">Dashboard</a>
 							</li>
-							<li class="active"><i class="fa fa-bar-chart-o"></i> Charts
+							<li class="active"><i class="fa fa-bar-chart-o"></i> MyPage
 							</li>
 						</ol>
 					</div>
@@ -300,137 +362,94 @@ $( document ).ready(function() {
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right fa-fw"></i>월회의수
+									<i class="fa fa-long-arrow-right fa-fw"></i>설문조사지(1  매우안좋음 ~ 5  매우좋음)
 								</h3>
 							</div>
 							<div class="panel-body">
 								<div class="row">
-									<div class="col-md-6 text-left">
-										<canvas id="myChart" width="1000" height="300"></canvas>
-									</div>
-									<div class="col-md-6 text-right">
-										<select id="job" class="selectpicker">
-											<option value="">년월</option>
-											<option value="1">17/01</option>
-											<option value="2">17/02</option>
-											<option value="3">17/03</option>
-											<option value="4">17/04</option>
-											<option value="5">17/05</option>
-											<option value="6">17/06</option>
-											<option value="7">17/07</option>
-											<option value="8">17/08</option>
-											<option value="9">17/09</option>
-											<option value="10">17/10</option>
-											<option value="11">17/11</option>
-											<option value="12">17/12</option>
-
-										</select>
-										<button id="histclick" class="btn-success" value="보기">보기</button>
-									</div>
+									<div id="survey1"></div>
+									<label class="radio-inline"> <input type="radio"
+										name="radioGroup" id="radio1" value="1"> 1
+									</label> <label class="radio-inline"> <input type="radio"
+										name="radioGroup" id="radio1" value="2"> 2
+									</label> <label class="radio-inline"> <input type="radio"
+										name="radioGroup" id="radio1" value="3"> 3
+									</label> <label class="radio-inline"> <input type="radio"
+										name="radioGroup" id="radio1" value="4"> 4
+									</label> <label class="radio-inline"> <input type="radio"
+										name="radioGroup" id="radio1" value="5"> 5
+									</label>
 								</div>
-							</div>
-						</div>
-					</div>
-
-
-				</div>
-				<!-- /.row -->
-
-				<div class="row">
-					<div class="col-lg-6">
-						<div class="panel panel-red">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> R&D
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div id="pie1"></div>
-								
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="panel panel-green">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> SOFTLAYER
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div id="pie"></div>
-								
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> BLUEMIX
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div class="flot-chart">
-									<div class="flot-chart-content" id="flot-moving-line-chart"></div>
-								</div>
-								
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="panel panel-yellow">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i>테스트파트
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div class="flot-chart">
-									<div class="flot-chart-content" id="flot-moving-line-chart"></div>
-								</div>
-								
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /.row -->
 <div class="row">
-					<div class="col-lg-6">
-						<div class="panel panel-red">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i>팀 총 키워드
-								</h3>
+								<div id="survey2"></div>
+								<label class="radio-inline"> <input type="radio"
+									name="radioGroup1" id="radio1" value="1"> 1
+								</label> <label class="radio-inline"> <input type="radio"
+									name="radioGroup1" id="radio2" value="2"> 2
+								</label> <label class="radio-inline"> <input type="radio"
+									name="radioGroup1" id="radio3" value="3"> 3
+								</label> <label class="radio-inline"> <input type="radio"
+									name="radioGroup1" id="radio4" value="4"> 4
+								</label> <label class="radio-inline"> <input type="radio"
+									name="radioGroup1" id="radio5" value="5"> 5
+								</label>
 							</div>
-							<div class="panel-body">
-								<div id="pie5"></div>
-								
-							</div>
+							<div class="row">
+							<div id="survey3"></div>
+							<label class="radio-inline"> <input type="radio"
+								name="radioGroup2" id="radio1" value="1"> 1
+							</label> <label class="radio-inline"> <input type="radio"
+								name="radioGroup2" id="radio2" value="2"> 2
+							</label> <label class="radio-inline"> <input type="radio"
+								name="radioGroup2" id="radio3" value="3"> 3
+							</label> <label class="radio-inline"> <input type="radio"
+								name="radioGroup2" id="radio4" value="4"> 4
+							</label> <label class="radio-inline"> <input type="radio"
+								name="radioGroup2" id="radio5" value="5"> 5
+							</label>
 						</div>
+						<div class="row">
+						<div id="survey4"></div>
+						<label class="radio-inline"> <input type="radio"
+							name="radioGroup3" id="radio1" value="1"> 1
+						</label> <label class="radio-inline"> <input type="radio"
+							name="radioGroup3" id="radio2" value="2"> 2
+						</label> <label class="radio-inline"> <input type="radio"
+							name="radioGroup3" id="radio3" value="3"> 3
+						</label> <label class="radio-inline"> <input type="radio"
+							name="radioGroup3" id="radio4" value="4"> 4
+						</label> <label class="radio-inline"> <input type="radio"
+							name="radioGroup3" id="radio5" value="5"> 5
+						</label>
 					</div>
-					<div class="col-lg-6">
-						<div class="panel panel-green">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i>연간 팀 총 키워드
-								</h3>
-							</div>
-							<div class="panel-body">
-								<div id="pie6"></div>
-								
-							</div>
-						</div>
-					</div>
-					</div>
-
-
-
+					<div class="row">
+					<div id="survey5"></div>
+					<label class="radio-inline"> <input type="radio"
+						name="radioGroup4" id="radio1" value="1"> 1
+					</label> <label class="radio-inline"> <input type="radio"
+						name="radioGroup4" id="radio2" value="2"> 2
+					</label> <label class="radio-inline"> <input type="radio"
+						name="radioGroup4" id="radio3" value="3"> 3
+					</label> <label class="radio-inline"> <input type="radio"
+						name="radioGroup4" id="radio4" value="4"> 4
+					</label> <label class="radio-inline"> <input type="radio"
+						name="radioGroup4" id="radio5" value="5"> 5
+					</label>
+				</div>
 			</div>
-			<!-- /.container-fluid -->
-
 		</div>
-		<!-- /#page-wrapper -->
+<button type="button" id="surveybutton" class="btn btn-default">설문작성완료</button>
+
+	</div>
+	<!-- /.row -->
+
+
+
+	</div>
+	<!-- /.container-fluid -->
+
+	</div>
+	<!-- /#page-wrapper -->
 
 	</div>
 	<!-- /#wrapper -->
@@ -444,183 +463,7 @@ $( document ).ready(function() {
 
 </body>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="/js/d3.min.js"  charset="utf-8"></script>
-<script src="/js/d3pie.js"></script>
 
 
-<script>
-$("#histclick").click(function(){
-	var str="17/0"+($("#job").val());
-	var str1="17/0"+(Number($("#job").val())+1).toString();
-	$('svg').remove();
-	histogram(str,str1);
-	$.ajax({
-
-		type : "POST",
-		url : "/monthpart2show",
-		dataType : "json",
-		data : {
-			part : 'Softlayer',
-			start: str,
-			end:str1
-			
-		},
-		error : function() {
-			alert('통신실패!!');
-		},
-		success : function(data) {
-			
-			var pie = new d3pie("pie", {
-				header : {
-					title : {
-						text : "Softlayer 월간 키워드"
-					}
-				},
-				data : {
-					content : data
-
-				}
-			});
-		}
-
-	});
-	$.ajax({
-
-		type : "POST",
-		url : "/monthpart1show",
-		dataType : "json",
-		data : {
-			part : 'RnD',
-			start: str,
-			end:str1
-			
-		},
-		error : function() {
-			alert('통신실패!!');
-		},
-		success : function(data) {
-			
-			var pie = new d3pie("pie1", {
-				header : {
-					title : {
-						text : "R&D 월관 키워드"
-					}
-				},
-				data : {
-					content : data
-
-				}
-			});
-		}
-
-	});
-	$.ajax({
-
-		type : "POST",
-		url : "/monthall",
-		dataType : "json",
-		data : {
-			
-			start: str,
-			end:str1
-			
-		},
-		error : function() {
-			alert('통신실패!!');
-		},
-		success : function(data) {
-			
-			var pie = new d3pie("pie5", {
-				header : {
-					title : {
-						text : "월간 팀 키워드"
-					}
-				},
-				data : {
-					content : data
-
-				}
-			});
-		}
-
-	});
-	$.ajax({
-
-		type : "POST",
-		url : "/yearall",
-		dataType : "json",
-		data : {
-			
-	
-			
-		},
-		error : function() {
-			alert('통신실패!!');
-		},
-		success : function(data) {
-			
-			var pie = new d3pie("pie6", {
-				header : {
-					title : {
-						text : "연간 팀 키워드"
-					}
-				},
-				data : {
-					content : data
-
-				}
-			});
-		}
-
-	});
-	
-});
-</script>
-
-<script>
-function histogram( str, str1){
-	$.ajax({
-
-		type : "POST",
-		url : "/teammonth",
-		dataType : "json",
-		data : {
-			
-			start: str,
-			end: str1
-			
-		},
-		error : function() {
-			alert('통신실패!!');
-		},
-		success : function(data) {
-			var data2 = {
-					labels: ["Bluemix", "테스트파트", "Softlayer", "RnD"],
-					datasets: [
-						{
-							label: "My First dataset",
-							fillColor: "rgba(150,200,250,0.5)",
-							strokeColor: "rgba(150,200,250,0.8)",
-							highlightFill: "rgba(150,200,250,0.75)",
-							highlightStroke: "rgba(150,200,250,1)",
-							data: data
-						}
-					]
-				};
-				var options = {	animation: false };
-				var steps = 3;
-				var ctx = $('#myChart').get(0).getContext('2d');
-				var myBarChart = new Chart(ctx).Bar(data2, {
-				    scaleOverride: true,
-				    scaleSteps: steps,
-				    scaleStepWidth: Math.ceil(6 / steps),
-				    scaleStartValue: 0
-				});
-		}
-		});
-	
-}
-</script>
 
 </html>

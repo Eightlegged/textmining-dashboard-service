@@ -44,4 +44,8 @@ public class ViewController {
 	public String enrollform() {
 		return "enroll";
 	}
+	@RequestMapping("/mypage")
+	public String mypage() {
+		return "mypage";
+	}
 }

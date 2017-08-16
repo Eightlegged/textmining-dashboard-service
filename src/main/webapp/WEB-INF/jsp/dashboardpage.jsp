@@ -8,11 +8,11 @@
 <meta name="author" content="">
 
 <title>SMA</title>
-	<!-- jQuery -->
-	<script src="js/jquery.js"></script>
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 
 
 <!-- Bootstrap Core CSS -->
@@ -42,7 +42,11 @@
 <style type="text/css">
 @import url("http://www.google.com/uds/css/gsearch.css");
 </style>
-<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+<link
+	href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+	rel="stylesheet">
 <script src="/js/d3pie.js"></script>
 
 <script>
@@ -155,11 +159,18 @@ $.ajax({
 				text = text.replace(/네번째/gi, "<br><br>4.");
 				text = text.replace(/예를 들어/gi, "<br><br>ex)");
 				text = text.replace(/예로/gi, "<br><br>ex)");
+				text = text.replace(/참고로/gi, "<br><br>cf)");
+				text = text.replace(/하지만/gi, "<br><br>하지만,)");
+				text = text.replace(/마지막으로/gi, "<br><br>마지막으로,)");
+				text = text.replace(/결론적으로/gi, "<br><br>결론적으로)");
+				text = text.replace(/중요한것은/gi, "<br><br>ex)");
 				$('#textpaper').append('<p>' + text + '</p>');
 
 			}
 
 		});
+		
+		
 		$.ajax({
 
 			type : "POST",
@@ -190,6 +201,152 @@ $.ajax({
 			}
 
 		});
+		$.ajax({
+
+			type : "POST",
+			url : "/usermeetinglist",
+			dataType : "json",
+			data : {
+				part : team
+			},
+			error : function() {
+				alert('통신실패!!');
+			},
+			success : function(data) {
+				$('#usermeeting >tbody>tr').remove();
+				var str="";
+				var j=1;
+				for(i=0;i<data.length;i++){
+					str+="<tr>";
+					str+="<td>"+data[i].user_name+"</td><td>"+data[i].user_position+"</td><td>"+data[i].user_email+"</td>"
+					str+="</tr>";
+				}
+				
+				$('#usermeeting>tbody').append(str);
+			}
+
+		});
+		
+		
+		
+		
+		$.ajax({
+
+			type : "POST",
+			url : "/similarity",
+			dataType : "json",
+			data : {
+				part : team
+			},
+			error : function() {
+				alert('통신실패!!');
+			},
+			success : function(data) {
+				$('#association > button').remove();
+				for(i=0;i<data.length;i++){
+					var str="<button type='button' id=k"+i+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
+					$('#association').append(str);
+					$('#k'+i).attr("class",'list-group-item');
+					$('#k'+i).attr("onclick",'showdata('+"'"+data[i].meeting_id+"'"+')');
+					str="";
+				}
+			}
+
+		});
+		$.ajax({
+
+			type : "POST",
+			url : "/showsurveyid",
+			dataType : "json",
+			data : {
+				part : team
+			},
+			error : function() {
+				alert('통신실패!!');
+			},
+			success : function(data) {
+				$('#usersurvey >tbody>tr').remove();
+				var str="";
+				var j=1;
+				for(i=0;i<data.length;i++){
+					str+="<tr>";
+					str+="<td>"+data[i].score1+"</td><td>"+data[i].score2+"</td><td>"+data[i].score3+"</td><td>"+data[i].score4+"</td><td>"+data[i].score5+"</td>";
+					
+					str+="</tr>";
+				}
+				
+				$('#usersurvey>tbody').append(str);
+			}
+
+		});
+	
+		
+			$.ajax({
+
+				type : "POST",
+				url : "/surveypoint",
+				dataType : "json",
+				data : {
+					
+					part : team
+					
+				},
+				error : function() {
+					alert('통신실패!!');
+				},
+				success : function(data) {
+					var data2 = {
+							labels: ["1번", "2번", "3번", "4번","5번"],
+							datasets: [
+								{
+									label: "My First dataset",
+									fillColor: "rgba(150,200,250,0.5)",
+									strokeColor: "rgba(150,200,250,0.8)",
+									highlightFill: "rgba(150,200,250,0.75)",
+									highlightStroke: "rgba(150,200,250,1)",
+									data: data
+								}
+							]
+						};
+						var options = {	animation: false };
+						var steps = 3;
+						var ctx = $('#myChart1').get(0).getContext('2d');
+						var myBarChart = new Chart(ctx).Bar(data2, {
+						    scaleOverride: true,
+						    scaleSteps: steps,
+						    scaleStepWidth: Math.ceil(6 / steps),
+						    scaleStartValue: 0
+						});
+				}
+				});
+			
+			$.ajax({
+
+				type : "POST",
+				url : "/showallsurvey",
+				dataType : "json",
+				data : {
+					
+					meeting_id : team
+					
+				},
+				error : function() {
+					alert('통신실패!!');
+				},
+				success : function(data) {
+					$('#surveyindex > p').remove();
+					
+					var text="<p>"+"1. "+data[0]+"</p><br>"+
+						"<p>"+"2. "+data[1]+"</p><br>"+
+						"<p>"+"3. "+data[2]+"</p><br>"+
+						"<p>"+"4. "+data[3]+"</p><br>"+
+						"<p>"+"5. "+data[4]+"</p>";
+						$('#surveyindex').append(text);
+						$('#surveyindex > p').attr("style","font-size:20px");
+					
+				}
+				});
+			
 	}
 
 	(function() {
@@ -317,10 +474,10 @@ $.ajax({
 						class="fa fa-fw fa-dashboard"></i> Dashboard</a></li>
 				<li><a href="/chart1"><i class="fa fa-fw fa-bar-chart-o"></i>
 						Charts</a></li>
-				<li><a href="/investform"><i class="fa fa-fw fa-table"></i>
-						Tables</a></li>
+				<li><a href="/mypage"><i class="fa fa-fw fa-table"></i>
+						Mypage</a></li>
 				<li><a href="/enrollform"><i class="fa fa-fw fa-edit"></i>
-						Forms</a></li>
+						설문작성</a></li>
 
 			</ul>
 		</div>
@@ -344,7 +501,7 @@ $.ajax({
 				</div>
 				<!-- /.row -->
 
-				
+
 
 				<div class="row">
 					<div class="col-lg-3">
@@ -360,11 +517,10 @@ $.ajax({
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" id="meetinglist1">
-									
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist1"></div>
+
 							</div>
 
 						</div>
@@ -382,12 +538,10 @@ $.ajax({
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" id="meetinglist2" >
-									
-										
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist2"></div>
+
 							</div>
 						</div>
 					</div>
@@ -404,12 +558,10 @@ $.ajax({
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" id="meetinglist3">
-									
-										
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist3"></div>
+
 							</div>
 						</div>
 					</div>
@@ -426,74 +578,47 @@ $.ajax({
 									</div>
 								</div>
 							</div>
-							<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 250px;">
-								<div class="list-group" id="meetinglist4">
-									
-								</div>
-								
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="meetinglist4"></div>
+
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- /.row -->
 				<div class="row">
-					<div class="col-lg-12">
+					<div class="col-lg-6">
 						<h2>회의 참가인원</h2>
 						<div class="table-responsive">
-							<table class="table table-bordered table-hover table-striped">
+							<table class="table table-bordered table-hover table-striped"
+								id="usermeeting">
 								<thead>
 									<tr>
-										<th>순서</th>
+
 										<th>이름</th>
 										<th>소속</th>
-										<th>샘플</th>
+										<th>이메일</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>/index.html</td>
-										<td>1265</td>
-										<td>32.3%</td>
-										<td>$321.33</td>
-									</tr>
-									<tr>
-										<td>/about.html</td>
-										<td>261</td>
-										<td>33.3%</td>
-										<td>$234.12</td>
-									</tr>
-									<tr>
-										<td>/sales.html</td>
-										<td>665</td>
-										<td>21.3%</td>
-										<td>$16.34</td>
-									</tr>
-									<tr>
-										<td>/blog.html</td>
-										<td>9516</td>
-										<td>89.3%</td>
-										<td>$1644.43</td>
-									</tr>
-									<tr>
-										<td>/404.html</td>
-										<td>23</td>
-										<td>34.3%</td>
-										<td>$23.52</td>
-									</tr>
-									<tr>
-										<td>/services.html</td>
-										<td>421</td>
-										<td>60.3%</td>
-										<td>$724.32</td>
-									</tr>
-									<tr>
-										<td>/blog/post.html</td>
-										<td>1233</td>
-										<td>93.2%</td>
-										<td>$126.34</td>
-									</tr>
+
 								</tbody>
 							</table>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-bar-chart-o fa-fw"></i> 연관 회의
+								</h3>
+							</div>
+							<div class="panel-body"
+								style="max-height: 10; overflow-y: scroll; height: 250px;">
+								<div class="list-group" id="association"></div>
+
+							</div>
 						</div>
 					</div>
 				</div>
@@ -514,7 +639,7 @@ $.ajax({
 				</div>
 			</div>
 			<!-- /.row -->
-<!-- row -->
+			<!-- row -->
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
@@ -571,16 +696,14 @@ $.ajax({
 									</tbody>
 								</table>
 							</div>
-							<div class="text-right">
-							
-							</div>
+							<div class="text-right"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- /.row -->
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-6">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">
@@ -597,10 +720,66 @@ $.ajax({
 
 					</div>
 				</div>
+
+				<div class="col-lg-6">
+					<h2>설문 점수</h2>
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover table-striped"
+							id="usersurvey">
+							<thead>
+								<tr>
+
+									<th>점수1</th>
+									<th>점수2</th>
+									<th>점수3</th>
+									<th>점수4</th>
+									<th>점수5</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
+<div class="row">
+			<div class="col-lg-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<i class="fa fa-long-arrow-right fa-fw"></i>설문평균점수
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							
+								<canvas id="myChart1" width="500" height="300"></canvas>
+							
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<i class="fa fa-long-arrow-right fa-fw"></i>설문목록
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div id="surveyindex"></div>
+					</div>
+				</div>
+			</div>
+
 		</div>
+			<!-- row -->
+		</div>
+		
 		<!-- row -->
-	</div>
+
 	<!-- /.container-fluid -->
 
 	</div>

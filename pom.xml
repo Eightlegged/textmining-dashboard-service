@@ -87,8 +87,51 @@
         <version>12.1.0.2</version>
 
     </dependency>
-
-
+<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-core_2.12</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-hannanum_2.12</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-kkma_2.12</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-komoran_2.12</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-twitter_2.12</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-eunjeon_2.12</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-kryo_2.12</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-server_2.11</artifactId>
+		    <version>1.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
