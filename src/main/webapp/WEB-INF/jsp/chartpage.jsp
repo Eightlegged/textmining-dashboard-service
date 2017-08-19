@@ -45,7 +45,7 @@ $( document ).ready(function() {
 		url : "/teammeeting",
 		dataType:"json",
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			
@@ -222,7 +222,7 @@ $( document ).ready(function() {
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting1name">R&D</div>
+										<div style="font-size: 32px" id="meeting1name">통신</div>
 									</div>
 								</div>
 							</div>
@@ -243,7 +243,7 @@ $( document ).ready(function() {
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting2name">Softlayer</div>
+										<div style="font-size: 32px" id="meeting2name">제조</div>
 									</div>
 								</div>
 							</div>
@@ -263,7 +263,7 @@ $( document ).ready(function() {
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting3name">Bluemix</div>
+										<div style="font-size: 32px" id="meeting3name">물류</div>
 									</div>
 								</div>
 							</div>
@@ -283,7 +283,7 @@ $( document ).ready(function() {
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting4name">테스트파트</div>
+										<div style="font-size: 32px" id="meeting4name">VDI</div>
 									</div>
 								</div>
 							</div>
@@ -341,7 +341,7 @@ $( document ).ready(function() {
 						<div class="panel panel-red">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> R&D
+									<i class="fa fa-long-arrow-right"></i> 통신
 								</h3>
 							</div>
 							<div class="panel-body">
@@ -354,7 +354,7 @@ $( document ).ready(function() {
 						<div class="panel panel-green">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> SOFTLAYER
+									<i class="fa fa-long-arrow-right"></i> 제조
 								</h3>
 							</div>
 							<div class="panel-body">
@@ -367,13 +367,11 @@ $( document ).ready(function() {
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i> BLUEMIX
+									<i class="fa fa-long-arrow-right"></i> 물류
 								</h3>
 							</div>
 							<div class="panel-body">
-								<div class="flot-chart">
-									<div class="flot-chart-content" id="flot-moving-line-chart"></div>
-								</div>
+								<div id="pie3"></div>
 								
 							</div>
 						</div>
@@ -382,13 +380,11 @@ $( document ).ready(function() {
 						<div class="panel panel-yellow">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-long-arrow-right"></i>테스트파트
+									<i class="fa fa-long-arrow-right"></i>VDI
 								</h3>
 							</div>
 							<div class="panel-body">
-								<div class="flot-chart">
-									<div class="flot-chart-content" id="flot-moving-line-chart"></div>
-								</div>
+								<div id="pie4"></div>
 								
 							</div>
 						</div>
@@ -397,7 +393,7 @@ $( document ).ready(function() {
 				<!-- /.row -->
 <div class="row">
 					<div class="col-lg-6">
-						<div class="panel panel-red">
+						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
 									<i class="fa fa-long-arrow-right"></i>팀 총 키워드
@@ -410,7 +406,7 @@ $( document ).ready(function() {
 						</div>
 					</div>
 					<div class="col-lg-6">
-						<div class="panel panel-green">
+						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
 									<i class="fa fa-long-arrow-right"></i>연간 팀 총 키워드
@@ -461,20 +457,20 @@ $("#histclick").click(function(){
 		url : "/monthpart2show",
 		dataType : "json",
 		data : {
-			part : 'Softlayer',
+			part : '물류',
 			start: str,
 			end:str1
 			
 		},
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			
 			var pie = new d3pie("pie", {
 				header : {
 					title : {
-						text : "Softlayer 월간 키워드"
+						text : "물류 월간 키워드"
 					}
 				},
 				data : {
@@ -491,20 +487,80 @@ $("#histclick").click(function(){
 		url : "/monthpart1show",
 		dataType : "json",
 		data : {
-			part : 'RnD',
+			part : '통신',
 			start: str,
 			end:str1
 			
 		},
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			
 			var pie = new d3pie("pie1", {
 				header : {
 					title : {
-						text : "R&D 월관 키워드"
+						text : "통신 월관 키워드"
+					}
+				},
+				data : {
+					content : data
+
+				}
+			});
+		}
+
+	});
+	$.ajax({
+
+		type : "POST",
+		url : "/monthpart3show",
+		dataType : "json",
+		data : {
+			part : '제조',
+			start: str,
+			end:str1
+			
+		},
+		error : function() {
+			
+		},
+		success : function(data) {
+			
+			var pie = new d3pie("pie3", {
+				header : {
+					title : {
+						text : "제조 월관 키워드"
+					}
+				},
+				data : {
+					content : data
+
+				}
+			});
+		}
+
+	});
+	$.ajax({
+
+		type : "POST",
+		url : "/monthpart4show",
+		dataType : "json",
+		data : {
+			part : 'VDI',
+			start: str,
+			end:str1
+			
+		},
+		error : function() {
+			
+		},
+		success : function(data) {
+			
+			var pie = new d3pie("pie4", {
+				header : {
+					title : {
+						text : "VDI 월관 키워드"
 					}
 				},
 				data : {
@@ -527,7 +583,7 @@ $("#histclick").click(function(){
 			
 		},
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			
@@ -556,7 +612,7 @@ $("#histclick").click(function(){
 			
 		},
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			
@@ -592,7 +648,7 @@ function histogram( str, str1){
 			
 		},
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			var data2 = {

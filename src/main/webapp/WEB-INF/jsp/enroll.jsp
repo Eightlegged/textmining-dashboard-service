@@ -42,7 +42,7 @@ $( document ).ready(function() {
 		url : "/teammeeting",
 		dataType:"json",
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			
@@ -50,13 +50,13 @@ $( document ).ready(function() {
 				
 				var str="<button type='button' id="+data[i].meeting_id+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
 			
-				if(data[i].mt_part=="RnD"){
+				if(data[i].mt_part=="통신"){
 				$('#meetinglist1').append(str);}
-				else if(data[i].mt_part=="Softlayer"){
+				else if(data[i].mt_part=="제조"){
 					$('#meetinglist2').append(str);
-				}else if(data[i].mt_part=="Bluemix"){
+				}else if(data[i].mt_part=="물류"){
 					$('#meetinglist3').append(str);
-				}else if(data[i].mt_part=="테스트파트"){
+				}else if(data[i].mt_part=="VDI"){
 					$('#meetinglist4').append(str);
 				}
 				$('#'+data[i].meeting_id).attr("class",'list-group-item');
@@ -93,7 +93,7 @@ $( document ).ready(function() {
 		
 		},
 		error : function() {
-			alert('통신실패!!');
+			
 		},
 		success : function(data) {
 			if(data==1){
@@ -246,7 +246,7 @@ $( document ).ready(function() {
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting1name">R&D</div>
+										<div style="font-size: 32px" id="meeting1name">통신</div>
 									</div>
 								</div>
 							</div>
@@ -263,11 +263,11 @@ $( document ).ready(function() {
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-3">
-										<i class="fa fa-comments fa-5x"></i>
+										<i class="fa fa-tasks fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting2name">Softlayer</div>
+										<div style="font-size: 32px" id="meeting2name">제조</div>
 									</div>
 								</div>
 							</div>
@@ -283,11 +283,11 @@ $( document ).ready(function() {
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-3">
-										<i class="fa fa-comments fa-5x"></i>
+										<i class="fa fa-tasks fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting3name">Bluemix</div>
+										<div style="font-size: 32px" id="meeting3name">물류</div>
 									</div>
 								</div>
 							</div>
@@ -303,11 +303,11 @@ $( document ).ready(function() {
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-3">
-										<i class="fa fa-comments fa-5x"></i>
+										<i class="fa fa-support fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting4name">테스트파트</div>
+										<div style="font-size: 32px" id="meeting4name">VDI</div>
 									</div>
 								</div>
 							</div>
@@ -326,35 +326,35 @@ $( document ).ready(function() {
 						<label for="inputEmail3" class="col-sm-2 control-label">설문1</label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" name="input1" id="input1"
-								placeholder="설문">
+								placeholder="설문" value="설문1">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="input3" class="col-sm-2 control-label">설문2</label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" name="input2" id="input2"
-								placeholder="설문">
+								placeholder="설문" value="설문2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="input3" class="col-sm-2 control-label">설문3</label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" name="input3" id="input3"
-								placeholder="설문">
+								placeholder="설문" value="설문3">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="input3" class="col-sm-2 control-label">설문4</label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" name="input4" id="input4"
-								placeholder="설문">
+								placeholder="설문" value="설문4">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="input3" class="col-sm-2 control-label">설문5</label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" name="input5" id="input5"
-								placeholder="설문">
+								placeholder="설문" value="설문5">
 						</div>
 					</div>
 

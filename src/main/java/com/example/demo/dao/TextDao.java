@@ -19,8 +19,8 @@ public interface TextDao {
 	public List<String> a(String text);
 	@Select("select KEYWORD,KEYWORDNUM from TEXTMINING  where meeting_id=#{param} ORDER BY KEYWORDNUM DESC ")
 	public List<keywordDTO> pieshow(@Param("param")String text);
-	@Insert("insert into Textmining(keyword,keywordnum,meeting_id,mt_part) values(#{keyword},#{keywordnum},'MT1','RnD')")
-	public void insertText(@Param("keyword")String keyword, @Param("keywordnum")int keywordnum);
+	@Insert("insert into Textmining(keyword,keywordnum,meeting_id,mt_part) values(#{keyword},#{keywordnum},#{param},#{param1})")
+	public void insertText(@Param("param1")String part,@Param("param")String id,@Param("keyword")String keyword, @Param("keywordnum")int keywordnum);
 	@Select("select KEYWORD,KEYWORDNUM from TEXTMINING where meeting_id=#{param} ORDER BY KEYWORDNUM DESC")
 	public List<keywordDTO> allpieshow(@Param("param")String text);
 	@Select("select TEXT from INSERTTEXT where Part=#{param}")
@@ -56,5 +56,7 @@ public interface TextDao {
 	@Select("select meeting_id, mt_name,mt_date,mt_part from meeting_serv where meeting_id=#{param}")
 	public MeetingservDto Assomeeting_serv(@Param("param")String part);
 	@Insert("insert into inserttext(part, text) values(#{param},#{param1})")
-	public void inserttextSTT(@Param("param")String id, @Param("param1")String text);
+	public void inserttextSTT(@Param("param")String meeting_id, @Param("param1")String text);
+	
+	
 }

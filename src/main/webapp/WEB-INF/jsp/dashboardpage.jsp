@@ -50,43 +50,48 @@
 <script src="/js/d3pie.js"></script>
 
 <script>
+	$(document).ready(
+			function() {
 
-$( document ).ready(function() {
-	 
-$.ajax({
-	type : "POST",
-	url : "/teammeeting",
-	dataType:"json",
-	error : function() {
-		alert('통신실패!!');
-	},
-	success : function(data) {
-		
-		for(i=0;i<data.length;i++){
-			
-			var str="<button type='button' id="+i+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
-		
-			if(data[i].mt_part=="RnD"){
-			$('#meetinglist1').append(str);}
-			else if(data[i].mt_part=="Softlayer"){
-				$('#meetinglist2').append(str);
-			}else if(data[i].mt_part=="Bluemix"){
-				$('#meetinglist3').append(str);
-			}else if(data[i].mt_part=="테스트파트"){
-				$('#meetinglist4').append(str);
-			}
-			$('#'+i).attr("class",'list-group-item');
-			$('#'+i).attr("onclick",'showdata('+"'"+data[i].meeting_id+"'"+')');
-			str="";
-		}
-	
-	}
+				$.ajax({
+					type : "POST",
+					url : "/teammeeting",
+					dataType : "json",
+					error : function() {
 
-});
-});
+					},
+					success : function(data) {
+
+						for (i = 0; i < data.length; i++) {
+
+							var str = "<button type='button' id="+i+">"
+									+ data[i].mt_name + " " + data[i].mt_date
+									+ "</button>";
+
+							if (data[i].mt_part == "통신") {
+								$('#meetinglist1').append(str);
+							} else if (data[i].mt_part == "제조") {
+								$('#meetinglist2').append(str);
+							} else if (data[i].mt_part == "물류") {
+								$('#meetinglist3').append(str);
+							} else if (data[i].mt_part == "QA") {
+								$('#meetinglist4').append(str);
+							}
+							$('#' + i).attr("class", 'list-group-item');
+							$('#' + i).attr(
+									"onclick",
+									'showdata(' + "'" + data[i].meeting_id
+											+ "'" + ')');
+							str = "";
+						}
+
+					}
+
+				});
+			});
 	function showdata(team) {
-		alert(team);
-		
+		alert("완료가 될때까지 기다려주세요.");
+
 		$.ajax({
 
 			type : "POST",
@@ -96,14 +101,14 @@ $.ajax({
 				part : team
 			},
 			error : function() {
-				alert('통신실패!!');
+
 			},
 			success : function(data) {
 				$('svg').remove();
 				var pie = new d3pie("pie", {
 					header : {
 						title : {
-							text : "분석 파이"
+							text : "분석 차트"
 						}
 					},
 					data : {
@@ -124,7 +129,7 @@ $.ajax({
 				part : team
 			},
 			error : function() {
-				alert('통신실패!!');
+
 			},
 			success : function(alldata) {
 				$('#keywordtable > tbody >tr').remove();
@@ -145,32 +150,31 @@ $.ajax({
 				part : team
 			},
 			error : function() {
-				alert('통신실패!!');
+
 			},
 			success : function(text) {
 				$('#textpaper >p ').remove();
-				text = text.replace(/1./gi, "<br><br>1.");
-				text = text.replace(/2./gi, "<br><br>2.");
-				text = text.replace(/3./gi, "<br><br>3.");
-				text = text.replace(/4./gi, "<br><br>4.");
 				text = text.replace(/첫번째/gi, "<br><br>1.");
-				text = text.replace(/두번재/gi, "<br><br>2.");
+				text = text.replace(/두번째/gi, "<br><br>2.");
 				text = text.replace(/세번째/gi, "<br><br>3.");
 				text = text.replace(/네번째/gi, "<br><br>4.");
+				text = text.replace(/첫 번째/gi, "<br><br>1.");
+				text = text.replace(/두 번째/gi, "<br><br>2.");
+				text = text.replace(/세 번째/gi, "<br><br>3.");
+				text = text.replace(/네 번째/gi, "<br><br>4.");
 				text = text.replace(/예를 들어/gi, "<br><br>ex)");
 				text = text.replace(/예로/gi, "<br><br>ex)");
 				text = text.replace(/참고로/gi, "<br><br>cf)");
-				text = text.replace(/하지만/gi, "<br><br>하지만,)");
-				text = text.replace(/마지막으로/gi, "<br><br>마지막으로,)");
-				text = text.replace(/결론적으로/gi, "<br><br>결론적으로)");
+				text = text.replace(/하지만/gi, "<br><br>하지만,");
+				text = text.replace(/마지막으로/gi, "<br><br>마지막으로,");
+				text = text.replace(/결론적으로/gi, "<br><br>결론적으로");
 				text = text.replace(/중요한것은/gi, "<br><br>ex)");
 				$('#textpaper').append('<p>' + text + '</p>');
 
 			}
 
 		});
-		
-		
+
 		$.ajax({
 
 			type : "POST",
@@ -180,22 +184,22 @@ $.ajax({
 				part : team
 			},
 			error : function() {
-				alert('통신실패!!');
+
 			},
 			success : function(data) {
 				$('#textpaper1 >p ').remove();
-				var str="<p>";
-				var j=1;
-				for(i=0;i<data.length;i++){
-					
-					if(i==20*j){
-						
-						str+=data[i]+"<br>";
+				var str = "<p>";
+				var j = 1;
+				for (i = 0; i < data.length; i++) {
+
+					if (i == 20 * j) {
+
+						str += data[i] + "<br>";
 						j++;
-					}else{
-						str+=data[i]+", ";
+					} else {
+						str += data[i] + ", ";
 					}
-					
+
 				}
 				$('#textpaper1').append(str);
 			}
@@ -210,49 +214,57 @@ $.ajax({
 				part : team
 			},
 			error : function() {
-				alert('통신실패!!');
+
 			},
 			success : function(data) {
 				$('#usermeeting >tbody>tr').remove();
-				var str="";
-				var j=1;
-				for(i=0;i<data.length;i++){
-					str+="<tr>";
-					str+="<td>"+data[i].user_name+"</td><td>"+data[i].user_position+"</td><td>"+data[i].user_email+"</td>"
-					str+="</tr>";
+				var str = "";
+				var j = 1;
+				for (i = 0; i < data.length; i++) {
+					str += "<tr>";
+					str += "<td>" + data[i].user_name + "</td><td>"
+							+ data[i].user_position + "</td><td>"
+							+ data[i].user_email + "</td>"
+					str += "</tr>";
 				}
-				
+
 				$('#usermeeting>tbody').append(str);
 			}
 
 		});
-		
-		
-		
-		
-		$.ajax({
 
-			type : "POST",
-			url : "/similarity",
-			dataType : "json",
-			data : {
-				part : team
-			},
-			error : function() {
-				alert('통신실패!!');
-			},
-			success : function(data) {
-				$('#association > button').remove();
-				for(i=0;i<data.length;i++){
-					var str="<button type='button' id=k"+i+">"+data[i].mt_name +" "+data[i].mt_date+"</button>";	
-					$('#association').append(str);
-					$('#k'+i).attr("class",'list-group-item');
-					$('#k'+i).attr("onclick",'showdata('+"'"+data[i].meeting_id+"'"+')');
-					str="";
-				}
-			}
+		$
+				.ajax({
 
-		});
+					type : "POST",
+					url : "/similarity",
+					dataType : "json",
+					data : {
+						part : team
+					},
+					error : function() {
+
+					},
+					success : function(data) {
+
+						$('#association > button').remove();
+						for (i = 0; i < data.length; i++) {
+							var str = "<button type='button' id=k"+i+">"
+									+ data[i].mt_name + " " + data[i].mt_date
+									+ "</button>";
+							$('#association').append(str);
+							$('#k' + i).attr("class", 'list-group-item');
+							$('#k' + i).attr(
+									"onclick",
+									'showdata(' + "'" + data[i].meeting_id
+											+ "'" + ')');
+							str = "";
+
+						}
+						
+					}
+
+				});
 		$.ajax({
 
 			type : "POST",
@@ -262,91 +274,188 @@ $.ajax({
 				part : team
 			},
 			error : function() {
-				alert('통신실패!!');
+
 			},
 			success : function(data) {
 				$('#usersurvey >tbody>tr').remove();
-				var str="";
-				var j=1;
-				for(i=0;i<data.length;i++){
-					str+="<tr>";
-					str+="<td>"+data[i].score1+"</td><td>"+data[i].score2+"</td><td>"+data[i].score3+"</td><td>"+data[i].score4+"</td><td>"+data[i].score5+"</td>";
-					
-					str+="</tr>";
+				var str = "";
+				var j = 1;
+				for (i = 0; i < data.length; i++) {
+					str += "<tr>";
+					str += "<td>" + data[i].score1 + "</td><td>"
+							+ data[i].score2 + "</td><td>" + data[i].score3
+							+ "</td><td>" + data[i].score4 + "</td><td>"
+							+ data[i].score5 + "</td>";
+
+					str += "</tr>";
 				}
-				
+
 				$('#usersurvey>tbody').append(str);
 			}
 
 		});
-	
+
+		$.ajax({
+
+			type : "POST",
+			url : "/surveypoint",
+			dataType : "json",
+			data : {
+
+				part : team
+
+			},
+			error : function() {
+
+			},
+			success : function(data) {
+				var data2 = {
+					labels : [ "1번", "2번", "3번", "4번", "5번" ],
+					datasets : [ {
+						label : "My First dataset",
+						fillColor : "rgba(150,200,250,0.5)",
+						strokeColor : "rgba(150,200,250,0.8)",
+						highlightFill : "rgba(150,200,250,0.75)",
+						highlightStroke : "rgba(150,200,250,1)",
+						data : data
+					} ]
+				};
+				var options = {
+					animation : false
+				};
+				var steps = 3;
+				var ctx = $('#myChart1').get(0).getContext('2d');
+				var myBarChart = new Chart(ctx).Bar(data2, {
+					scaleOverride : true,
+					scaleSteps : steps,
+					scaleStepWidth : Math.ceil(6 / steps),
+					scaleStartValue : 0
+				});
+			}
+		});
+
+		$.ajax({
+
+			type : "POST",
+			url : "/showallsurvey",
+			dataType : "json",
+			data : {
+
+				meeting_id : team
+
+			},
+			error : function() {
+
+			},
+			success : function(data) {
+				$('#surveyindex > p').remove();
+
+				var text = "<p>" + "1. " + data[0] + "</p><br>" + "<p>" + "2. "
+						+ data[1] + "</p><br>" + "<p>" + "3. " + data[2]
+						+ "</p><br>" + "<p>" + "4. " + data[3] + "</p><br>"
+						+ "<p>" + "5. " + data[4] + "</p>";
+				$('#surveyindex').append(text);
+				$('#surveyindex > p').attr("style", "font-size:20px");
+
+			}
+		});
+		$.ajax({
+
+			type : "POST",
+			url : "/emotionshow",
+			dataType : "json",
+			data : {
+				part : team
+			},
+			error : function() {
+
+			},
+			success : function(data) {
+				$('#assoindex >p ').remove();
+				$('#emotion > p').remove();
+				var str = "";
+
+				for (i = 0; i < data.concepts.length; i++) {
+					str += "<p>" + "연관 주제: " + data.concepts[i].text
+							+ "  | 연관율: " + (data.concepts[i].relevance * 100)
+							+ "%</p><br>";
+				}
+				$('#assoindex').append(str);
+				if (data.sentiment.document.score > 0) {
+					$('#emotion').append("<p>긍정</p>");
+					$('#emotion > p').attr("style",
+							"font-size:20px; color:blue");
+				} else if (data.sentimetn.document.score = 0) {
+					$('#emotion').append("<p>중립</p>");
+					$('#emotion > p').attr("style",
+							"font-size:20px;color:yellow");
+				} else {
+					$('#emotion').append("<p>부정</p>");
+					$('#emotion > p')
+							.attr("style", "font-size:20px; color:red");
+				}
+				$('#assoindex >p').attr("style", "font-size:20px;");
+			}
+
+		});
+		$.ajax({
+
+			type : "POST",
+			url : "/assokeyword",
+			dataType : "json",
+			data : {
+				meeting_id : team
+			},
+			error : function() {
+
+			},
+			success : function(data) {
+				$('#assokeywordtable >tbody>tr').remove();
+				$('#assokeywordtable1 >tbody>tr').remove();
+				$('#assokeywordtable2 >tbody>tr').remove();
+				
+				var str="";
+				var str1="";
+				var str2="";
+				for(i=0;i<data.length;i++){
+					if(i==1)
+					str1+="<tr>";
+					for(j=0;j<data[i].length;j++){
+						if(i==0)
+						str+="<tr>";
+						else if(i==1)
+							str1+="<td>"+data[i][j]+"</td>";
+						else if(i==2)
+						str2+="<tr>";
+						for(k=0;k<data[i][j].length;k++){
+							
+							if(i==0){
+								str+="<td>"+data[i][j][k]+"</td>";
+								
+							}else if(i==1){
+								
+							}else if(i==2){
+								str2+="<td>"+data[i][j][k]+"</td>";
+							}
+						}
+						if(i==0)
+						str+="</tr>";
+						
+						else if(i==2)
+						str2+="</tr>";
+					}
+					if(i==1)
+						str1+="</tr>";
+				}
+			
+				$('#assokeywordtable>tbody').append(str);
+				$('#assokeywordtable1>tbody').append(str1);
+				$('#assokeywordtable2>tbody').append(str2);
+				alert("완료되었습니다!");
+			}
+
+		});
 		
-			$.ajax({
-
-				type : "POST",
-				url : "/surveypoint",
-				dataType : "json",
-				data : {
-					
-					part : team
-					
-				},
-				error : function() {
-					alert('통신실패!!');
-				},
-				success : function(data) {
-					var data2 = {
-							labels: ["1번", "2번", "3번", "4번","5번"],
-							datasets: [
-								{
-									label: "My First dataset",
-									fillColor: "rgba(150,200,250,0.5)",
-									strokeColor: "rgba(150,200,250,0.8)",
-									highlightFill: "rgba(150,200,250,0.75)",
-									highlightStroke: "rgba(150,200,250,1)",
-									data: data
-								}
-							]
-						};
-						var options = {	animation: false };
-						var steps = 3;
-						var ctx = $('#myChart1').get(0).getContext('2d');
-						var myBarChart = new Chart(ctx).Bar(data2, {
-						    scaleOverride: true,
-						    scaleSteps: steps,
-						    scaleStepWidth: Math.ceil(6 / steps),
-						    scaleStartValue: 0
-						});
-				}
-				});
-			
-			$.ajax({
-
-				type : "POST",
-				url : "/showallsurvey",
-				dataType : "json",
-				data : {
-					
-					meeting_id : team
-					
-				},
-				error : function() {
-					alert('통신실패!!');
-				},
-				success : function(data) {
-					$('#surveyindex > p').remove();
-					
-					var text="<p>"+"1. "+data[0]+"</p><br>"+
-						"<p>"+"2. "+data[1]+"</p><br>"+
-						"<p>"+"3. "+data[2]+"</p><br>"+
-						"<p>"+"4. "+data[3]+"</p><br>"+
-						"<p>"+"5. "+data[4]+"</p>";
-						$('#surveyindex').append(text);
-						$('#surveyindex > p').attr("style","font-size:20px");
-					
-				}
-				});
-			
 	}
 
 	(function() {
@@ -390,7 +499,7 @@ $.ajax({
 								</span>
 								<div class="media-body">
 									<h5 class="media-heading">
-										<strong>John Smith</strong>
+										<strong>${sessionScope.user_id}</strong>
 									</h5>
 									<p class="small text-muted">
 										<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
@@ -406,7 +515,7 @@ $.ajax({
 								</span>
 								<div class="media-body">
 									<h5 class="media-heading">
-										<strong>John Smith</strong>
+										<strong>${sessionScope.user_id}</strong>
 									</h5>
 									<p class="small text-muted">
 										<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
@@ -422,7 +531,7 @@ $.ajax({
 								</span>
 								<div class="media-body">
 									<h5 class="media-heading">
-										<strong>John Smith</strong>
+										<strong>${sessionScope.user_id}</strong>
 									</h5>
 									<p class="small text-muted">
 										<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
@@ -454,8 +563,8 @@ $.ajax({
 					<li><a href="#">View All</a></li>
 				</ul></li>
 			<li class="dropdown"><a href="#" class="dropdown-toggle"
-				data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b
-					class="caret"></b></a>
+				data-toggle="dropdown"><i class="fa fa-user"></i>${sessionScope.user_id}
+					<b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="#"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 					<li><a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
@@ -513,7 +622,7 @@ $.ajax({
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting1name">R&D</div>
+										<div style="font-size: 32px" id="meeting1name">통신</div>
 									</div>
 								</div>
 							</div>
@@ -530,11 +639,11 @@ $.ajax({
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-3">
-										<i class="fa fa-comments fa-5x"></i>
+										<i class="fa fa-tasks fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting2name">Softlayer</div>
+										<div style="font-size: 32px" id="meeting2name">제조</div>
 									</div>
 								</div>
 							</div>
@@ -550,11 +659,11 @@ $.ajax({
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-3">
-										<i class="fa fa-comments fa-5x"></i>
+										<i class="fa fa-tasks fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting3name">Bluemix</div>
+										<div style="font-size: 32px" id="meeting3name">물류</div>
 									</div>
 								</div>
 							</div>
@@ -570,11 +679,11 @@ $.ajax({
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-3">
-										<i class="fa fa-comments fa-5x"></i>
+										<i class="fa fa-support fa-5x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
 
-										<div style="font-size: 32px" id="meeting4name">테스트파트</div>
+										<div style="font-size: 32px" id="meeting4name">VDI</div>
 									</div>
 								</div>
 							</div>
@@ -645,7 +754,7 @@ $.ajax({
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								<i class="fa fa-bar-chart-o fa-fw"></i> 구조화 흐름
+								<i class="fa fa-bar-chart-o fa-fw"></i> 키워드 흐름
 							</h3>
 						</div>
 						<div class="panel-body">
@@ -655,13 +764,71 @@ $.ajax({
 				</div>
 			</div>
 			<!-- /.row -->
-
-			<div class="row">
-				<div class="col-lg-8">
+<div class="row">
+				<div class="col-lg-6">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								<i class="fa fa-long-arrow-right fa-fw"></i>키워드 분석차트
+								<i class="fa fa-long-arrow-right fa-fw"></i>카테고리분석
+							</h3>
+						</div>
+						<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 150px;">
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover table-striped"
+									id="assokeywordtable1">
+									<thead>
+										<tr>
+											
+											<th>CATEGORY</th>
+											<th>RELEVANCE</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-long-arrow-right fa-fw"></i>컨셉 분석
+							</h3>
+						</div>
+						<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 150px;">
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover table-striped"
+									id="assokeywordtable2">
+									<thead>
+										<tr>
+											
+											<th>CONCEPT</th>
+											<th>RELEVANCE</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				</div>
+				<!-- row -->
+			<div class="row">
+				<div class="col-lg-7">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-long-arrow-right fa-fw"></i>빈도수 기반 키워드 분석차트
 							</h3>
 						</div>
 						<div class="panel-body">
@@ -670,8 +837,35 @@ $.ajax({
 						</div>
 					</div>
 				</div>
+				<div class="col-lg-5">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-long-arrow-right fa-fw"></i>에이브릴 분석
+							</h3>
+						</div>
+						<div class="panel-body" style="max-height: 10; overflow-y: scroll; height: 550px;">
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover table-striped"
+									id="assokeywordtable">
+									<thead>
+										<tr>
+											
+											<th>KEYWORD</th>
+											<th>RELEVANCE</th>
+											<th>SENTIMENT</th>
+										</tr>
+									</thead>
+									<tbody>
 
-				<div class="col-lg-4">
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!--  <div class="col-lg-4">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">
@@ -699,7 +893,7 @@ $.ajax({
 							<div class="text-right"></div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 			</div>
 			<!-- /.row -->
 			<div class="row">
@@ -743,44 +937,71 @@ $.ajax({
 					</div>
 				</div>
 			</div>
-<div class="row">
-			<div class="col-lg-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<i class="fa fa-long-arrow-right fa-fw"></i>설문평균점수
-						</h3>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							
-								<canvas id="myChart1" width="500" height="300"></canvas>
-							
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-long-arrow-right fa-fw"></i>설문평균점수
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
 
+								<canvas id="myChart1" width="500" height="300"></canvas>
+
+
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-lg-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<i class="fa fa-long-arrow-right fa-fw"></i>설문목록
-						</h3>
-					</div>
-					<div class="panel-body">
-						<div id="surveyindex"></div>
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-long-arrow-right fa-fw"></i>설문목록
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div id="surveyindex"></div>
+						</div>
 					</div>
 				</div>
-			</div>
 
-		</div>
+			</div>
+			<!--  <div class="row">
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-long-arrow-right fa-fw"></i>감정상태
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div id="emotion"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-long-arrow-right fa-fw"></i>연관 주제
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div id="assoindex"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>-->
 			<!-- row -->
 		</div>
-		
+
 		<!-- row -->
 
-	<!-- /.container-fluid -->
+		<!-- /.container-fluid -->
 
 	</div>
 	<!-- /#page-wrapper -->

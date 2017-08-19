@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,8 @@ public class InvestController {
 		return "1";
 	}
 	@RequestMapping("/teammeeting1")
-	public List teammeeting1(HttpServletRequest request) {
-		return mapper1.meetingresult("ABC");
+	public List teammeeting1(HttpServletRequest request,HttpSession session) {
+		return mapper1.meetingresult((String)session.getAttribute("user_id"));
 	}
 	@RequestMapping("/showallsurvey")
 	public List showallsurvey(HttpServletRequest request) {
@@ -46,9 +47,9 @@ public class InvestController {
 		return result;
 	}
 	@RequestMapping("/insertsurvey")
-	public String insertsurvey(HttpServletRequest request) {
-		mapper1.insertsurvey_result(request.getParameter("meeting_id"),"ABC", request.getParameter("score1"), request.getParameter("score2"), request.getParameter("score3"), request.getParameter("score4"), request.getParameter("score5"));
-		mapper1.updatesurvey("ABC", request.getParameter("meeting_id"));
+	public String insertsurvey(HttpServletRequest request,HttpSession session) {
+		mapper1.insertsurvey_result(request.getParameter("meeting_id"),(String)session.getAttribute("user_id"), request.getParameter("score1"), request.getParameter("score2"), request.getParameter("score3"), request.getParameter("score4"), request.getParameter("score5"));
+		mapper1.updatesurvey((String)session.getAttribute("user_id"), request.getParameter("meeting_id"));
 		return "1";
 	}
 	@RequestMapping("/surveypoint")
